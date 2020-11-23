@@ -46,6 +46,16 @@ namespace SignalRv2.Controllers
 
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByNameAsync(model.UserName);
+
+                if(user !=null)
+                {
+                    if(! await _userManager.IsEmailConfirmedAsync(user))
+                    {
+                        ModelState.AddModelError(string.Empty, "Please confirm your email adress");
+                        return View(model);
+                    }
+                }
                 var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, true);
                 if (result.Succeeded)
                 {
@@ -89,10 +99,14 @@ namespace SignalRv2.Controllers
 
                     await _userManager.AddClaimsAsync(user, claims);
 
-                    await _signInManager.SignInAsync(user, true);
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callback = Url.Action("ConfirmEmail", "Auth", new { token, email = model.Email }, Request.Scheme);
+                    var message = new EmailMessage(model.Email, "Confirmation email", callback);
+                    await _emailSender.SendEmailAsync(message);
 
+                    // await _signInManager.SignInAsync(user, true);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("EmailConfirmation", "Auth");
                 }
                 else
                 {
@@ -128,8 +142,7 @@ namespace SignalRv2.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                // if (user == null ||   !(await _userManager.IsEmailConfirmedAsync(user)))
-                if (user == null)
+                if (user == null ||   !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     return RedirectToAction("ForgotPasswordConfirmation");
                 }
@@ -187,5 +200,30 @@ namespace SignalRv2.Controllers
             return View();
         }
 
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            if(token == null || email == null)
+            {
+                return View("Error");
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if(result.Succeeded)
+            {
+                return View();
+            }
+            return View("Error");
+        }
+
+        public IActionResult EmailConfirmation()
+        {
+            return View();
+        }
     }
 }
