@@ -10,11 +10,9 @@ namespace SignalRv2.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Content { get; set; }
         public DateTimeOffset When { get; set; }
-
-        public string ChatClientId { get; set; }
-        public ChatClient ChatClient { get; set; }
-
-        public long DialogId { get; set; }
+        public string UserId { get; set; }
+        public User User { get; set; }
+        public string DialogId { get; set; }
         public Dialog Dialog { get; set; }
     }
 }

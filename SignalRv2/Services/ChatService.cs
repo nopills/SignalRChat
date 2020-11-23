@@ -12,13 +12,13 @@ namespace SignalRv2.Services
         {
             _chatRepo = chatRepo;
         }
-        public async Task<Message> AddMessage(ChatClient chatClient, string content, long dialogId)
+        public async Task<Message> AddMessage(User user, string dialogId, string content)
         {
             var message = new Message
             {
                 Content = content,
-                When = DateTimeOffset.Now,
-                ChatClient = chatClient,       
+                When = DateTimeOffset.Now,          
+                User = user,
                 DialogId = dialogId
             };
 

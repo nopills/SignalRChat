@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SignalRv2.Abstract;
 using SignalRv2.Models;
 using SignalRv2.Models.ViewModels;
+using SignalRv2.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +18,13 @@ namespace SignalRv2.Controllers
     {
         public UserManager<User> _userManager { get; }
         public SignInManager<User> _signInManager { get; }
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public IChatRepo _chatRepo { get; }
+
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IChatRepo chatRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _chatRepo = chatRepo;
         }
 
         public IActionResult Login()
@@ -73,14 +78,16 @@ namespace SignalRv2.Controllers
                 
                 if (result.Succeeded)
                 {
-                    List<Claim> claims = new List<Claim>() {
-                        new Claim(Constants.Identifier, user.Id),
-                        new Claim("FullName", string.Format("{0} {1}", model.FirstName, model.LastName))                                
-                };
-               
+                    List<Claim> claims = new List<Claim>() 
+                    {
+                      new Claim(Constants.Identifier, user.Id),
+                      new Claim("FullName", string.Format("{0} {1}", model.FirstName, model.LastName)) 
+                    };
+                    
                     await _userManager.AddClaimsAsync(user, claims);
-
+                       
                     await _signInManager.SignInAsync(user, true);
+
  
                     return RedirectToAction("Index", "Home");
                 }
@@ -94,7 +101,6 @@ namespace SignalRv2.Controllers
             }
             return View(model);
         }
-
 
         public async Task<IActionResult> Logout()
         {

@@ -13,12 +13,7 @@ namespace SignalRv2.Services
         public ChatRepo(DatabaseContext db)
         {
             _db = db;
-        }
-        public void AddChatClient(ChatClient chatClient)
-        {
-            _db.ChatClients.Add(chatClient);
-            _db.SaveChanges();
-        }
+        }       
 
         public async Task<string> AddDialog(Dialog dialog)
         {
@@ -72,12 +67,7 @@ namespace SignalRv2.Services
         public async Task SaveChangesAsync()
         {
             await _db.SaveChangesAsync();
-        }
-
-        public IQueryable<ChatClient> SearchUsers(string name)
-        {
-            return _db.ChatClients.Where(u => u.User.UserName.Contains(name));
-        }
+        }      
 
         public string HasDialog(string owner, string recipeint)
         {
@@ -91,6 +81,6 @@ namespace SignalRv2.Services
                 }
             }
             return dialog.Id;
-        }
+        }   
     }
 }

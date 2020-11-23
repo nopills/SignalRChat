@@ -9,13 +9,11 @@ namespace SignalRv2.Services.Interfaces
     {
         User GetUserById(string userId);
         User GetUserByName(string name);
-        IQueryable<ChatClient> SearchUsers(string name);
         Message GetMessageById(string messageId);
         IQueryable<User> GetAllUsers();
         string HasDialog(string owner, string recipeint);
         Task AddUser(User user);
         Task AddMessage(Message message);
-        void AddChatClient(ChatClient chatClient);
         Task<string> AddDialog(Dialog dialog);
 
         void SaveChanges();
