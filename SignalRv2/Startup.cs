@@ -11,6 +11,7 @@ using SignalRv2.Abstract;
 using SignalRv2.Hubs;
 using SignalRv2.Models;
 using SignalRv2.Services;
+using SignalRv2.Services.EmailSender;
 using SignalRv2.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,10 @@ namespace SignalRv2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-           
+
+            var emailConfig = Configuration.GetSection("EmailConfig").Get<EmailConfig>();
+            services.AddSingleton(emailConfig);
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<AppSettings>();
             services.AddScoped<IChatRepo, ChatRepo>();
             services.AddScoped<IChatService, ChatService>();
@@ -46,7 +50,8 @@ namespace SignalRv2
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
-            }).AddEntityFrameworkStores<DatabaseContext>();
+            }).AddEntityFrameworkStores<DatabaseContext>()
+            .AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -57,6 +62,8 @@ namespace SignalRv2
                 options.ExpireTimeSpan = TimeSpan.FromDays(5);
             });
 
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            options.TokenLifespan = TimeSpan.FromHours(1));
             
 
             services.AddControllersWithViews();
