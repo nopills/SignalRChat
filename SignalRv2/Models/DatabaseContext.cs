@@ -13,12 +13,10 @@ namespace SignalRv2.Models
 
 
         public DbSet<Message> Messages { get; set; }
-        public DbSet<ChatClient> ChatClients { get; set; }
         public DbSet<Dialog> Dialogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ChatClient>().HasMany(d => d.Dialogs);
             modelBuilder.Entity<Dialog>().HasMany(m => m.Messages);
 
             base.OnModelCreating(modelBuilder);

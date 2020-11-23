@@ -207,16 +207,13 @@ namespace SignalRv2.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ChatClientId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("DialogId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("DialogId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("DialogId1")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTimeOffset>("When")
@@ -224,9 +221,9 @@ namespace SignalRv2.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChatClientId");
+                    b.HasIndex("DialogId");
 
-                    b.HasIndex("DialogId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -395,17 +392,17 @@ namespace SignalRv2.Migrations
 
             modelBuilder.Entity("SignalRv2.Models.Message", b =>
                 {
-                    b.HasOne("SignalRv2.Models.ChatClient", "ChatClient")
-                        .WithMany()
-                        .HasForeignKey("ChatClientId");
-
                     b.HasOne("SignalRv2.Models.Dialog", "Dialog")
                         .WithMany("Messages")
-                        .HasForeignKey("DialogId1");
+                        .HasForeignKey("DialogId");
 
-                    b.Navigation("ChatClient");
+                    b.HasOne("SignalRv2.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Dialog");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SignalRv2.Models.ChatClient", b =>

@@ -219,22 +219,21 @@ namespace SignalRv2.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     When = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ChatClientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DialogId = table.Column<long>(type: "bigint", nullable: false),
-                    DialogId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DialogId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Messages_ChatClients_ChatClientId",
-                        column: x => x.ChatClientId,
-                        principalTable: "ChatClients",
+                        name: "FK_Messages_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Messages_Dialogs_DialogId1",
-                        column: x => x.DialogId1,
+                        name: "FK_Messages_Dialogs_DialogId",
+                        column: x => x.DialogId,
                         principalTable: "Dialogs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -300,14 +299,14 @@ namespace SignalRv2.Migrations
                 column: "RecieverId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_ChatClientId",
+                name: "IX_Messages_DialogId",
                 table: "Messages",
-                column: "ChatClientId");
+                column: "DialogId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_DialogId1",
+                name: "IX_Messages_UserId",
                 table: "Messages",
-                column: "DialogId1");
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

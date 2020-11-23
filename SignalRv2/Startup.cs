@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SignalRv2.Abstract;
+using SignalRv2.Hubs;
 using SignalRv2.Models;
 using SignalRv2.Services;
 using SignalRv2.Services.Interfaces;
@@ -31,6 +32,11 @@ namespace SignalRv2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+           
+            services.AddScoped<AppSettings>();
+            services.AddScoped<IChatRepo, ChatRepo>();
+            services.AddScoped<IChatService, ChatService>();
+
             services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 5;
@@ -51,9 +57,7 @@ namespace SignalRv2
                 options.ExpireTimeSpan = TimeSpan.FromDays(5);
             });
 
-            services.AddScoped<AppSettings>();
-            services.AddScoped<IChatRepo, ChatRepo>();
-            services.AddScoped<IChatService, ChatService>();
+            
 
             services.AddControllersWithViews();
 
@@ -87,6 +91,8 @@ namespace SignalRv2
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }
