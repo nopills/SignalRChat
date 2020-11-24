@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using SignalRv2.Abstract;
 using SignalRv2.Models;
 using SignalRv2.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SignalRv2.Hubs
@@ -74,6 +76,11 @@ namespace SignalRv2.Hubs
             await _chatService.ChangeStatus(currentUser, UserStatus.Online);
             await _chatService.AddMessage(currentUser, dialogId, message);            
             await Clients.All.SendAsync("RecieveMessage", identityName,  message);
+        }
+
+        public async Task<IEnumerable<Message>> GetLastMessages(string dialogId)
+        {
+            return await _chatRepo.GetLastMessages(dialogId).ToListAsync();
         }
 
     }

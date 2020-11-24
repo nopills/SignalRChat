@@ -1,4 +1,5 @@
-﻿using SignalRv2.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SignalRv2.Models;
 using SignalRv2.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,11 @@ namespace SignalRv2.Services
                 }
             }
             return dialog.Id;
-        }   
+        }
+
+        public IQueryable<Message> GetLastMessages(string dialogId)
+        {
+            return _db.Messages.Where(d => d.DialogId == dialogId).OrderBy(x => x.When).Take(100);
+        }
     }
 }
