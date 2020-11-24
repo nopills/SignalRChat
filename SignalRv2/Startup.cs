@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,7 @@ using SignalRv2.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SignalRv2
@@ -41,6 +44,7 @@ namespace SignalRv2
             services.AddScoped<IChatRepo, ChatRepo>();
             services.AddScoped<IChatService, ChatService>();
 
+          
             services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 5;
@@ -51,7 +55,7 @@ namespace SignalRv2
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
             }).AddEntityFrameworkStores<DatabaseContext>()
-            .AddDefaultTokenProviders();
+            .AddDefaultTokenProviders();  
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -84,15 +88,13 @@ namespace SignalRv2
              
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection();          
             app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseAuthentication();
-
             app.UseAuthorization();
-
+          
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

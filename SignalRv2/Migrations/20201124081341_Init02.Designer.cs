@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SignalRv2.Models;
 
 namespace SignalRv2.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20201124081341_Init02")]
+    partial class Init02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,9 +185,6 @@ namespace SignalRv2.Migrations
 
                     b.Property<string>("DialogId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");

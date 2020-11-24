@@ -17,14 +17,22 @@ namespace SignalRv2.Services
             var message = new Message
             {
                 Content = content,
-                When = DateTimeOffset.Now,          
+                When = DateTimeOffset.Now,
                 User = user,
-                DialogId = dialogId
+                DialogId = dialogId,
+                IsRead = false
             };
 
             await _chatRepo.AddMessage(message);
 
             return message;
+        }
+
+        public async Task ChangeStatus(User user, UserStatus status)
+        {
+            user.Status = status;
+            user.LastActivity = DateTimeOffset.UtcNow;
+            await _chatRepo.SaveChangesAsync();
         }
 
         public async Task<string> CreateDialog(User cretedBy, User reciever, DateTimeOffset dateTime)
