@@ -36,9 +36,11 @@ let msg = document.getElementById("message");
 
 
 document.getElementById("sendBtn").addEventListener("click", function (e) {
-    let message = document.getElementById("message").value;   
-    connection.invoke("SendPrivateMessage", "kekushpekush", message);
-    sended = true;
+    let res = connection.invoke("GetLastMessages", "e2c0bfd5-0bb8-488c-b5f7-9e414224f435");
+    console.log(res);
+    //let message = document.getElementById("message").value;   
+    //connection.invoke("SendPrivateMessage", "kekushpekush", message);
+    //sended = true;
 });
 
 
