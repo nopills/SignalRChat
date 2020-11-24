@@ -14,5 +14,6 @@ namespace SignalRv2.Models
         public User User { get; set; }
         public string DialogId { get; set; }
         public Dialog Dialog { get; set; }
+        public bool IsRead { get; set; }
     }
 }
