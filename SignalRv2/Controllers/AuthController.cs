@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace SignalRv2.Controllers
 {
-    //[Route("[action]")]
+ 
     public class AuthController : Controller
     {
         public UserManager<User> _userManager { get; }
@@ -30,6 +30,7 @@ namespace SignalRv2.Controllers
             _emailSender = emailSender;
         }
 
+    
         public IActionResult Login()
         {
             return View();
@@ -48,14 +49,12 @@ namespace SignalRv2.Controllers
             {
                 var user = await _userManager.FindByNameAsync(model.UserName);
 
-                if(user !=null)
-                {
-                    if(! await _userManager.IsEmailConfirmedAsync(user))
-                    {
-                        ModelState.AddModelError(string.Empty, "Please confirm your email adress");
-                        return View(model);
-                    }
-                }
+                //if(user != null && !(await _userManager.IsEmailConfirmedAsync(user)))
+                //{                    
+                //        ModelState.AddModelError(string.Empty, "Please confirm your email adress");
+                //        return View(model);                   
+                //}
+
                 var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, true);
                 if (result.Succeeded)
                 {

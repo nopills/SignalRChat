@@ -88,5 +88,10 @@ namespace SignalRv2.Services
         {
             return _db.Messages.Where(d => d.DialogId == dialogId).OrderBy(x => x.When).Take(100);
         }
+
+        public IQueryable<Dialog> GetAllDialogs(User user)
+        {
+            return _db.Dialogs.Where(x => x.CreatedBy == user);
+        }
     }
 }

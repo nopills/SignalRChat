@@ -39,12 +39,12 @@ namespace SignalRv2
 
             var emailConfig = Configuration.GetSection("EmailConfig").Get<EmailConfig>();
             services.AddSingleton(emailConfig);
+            services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<AppSettings>();
             services.AddScoped<IChatRepo, ChatRepo>();
             services.AddScoped<IChatService, ChatService>();
 
-          
             services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 5;
@@ -99,7 +99,7 @@ namespace SignalRv2
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Auth}/{action=Login}/{id?}");
 
                 endpoints.MapHub<ChatHub>("/chat");
             });

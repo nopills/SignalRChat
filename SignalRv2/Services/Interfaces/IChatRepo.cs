@@ -12,6 +12,7 @@ namespace SignalRv2.Services.Interfaces
         IQueryable<Message> GetLastMessages(string dialogId);
         Message GetMessageById(string messageId);
         IQueryable<User> GetAllUsers();
+        IQueryable<Dialog> GetAllDialogs(User user);
         string HasDialog(string owner, string recipeint);
         Task AddUser(User user);
         Task AddMessage(Message message);

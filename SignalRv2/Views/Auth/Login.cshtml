@@ -2,35 +2,74 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Login</h1>
 
 
 @model SignalRv2.Models.ViewModels.LoginViewModel;
 
-<form asp-antiforgery="true" asp-action="Login" asp-controller="Auth">
-    <div>
-        <div class="validation" asp-validation-summary="ModelOnly"></div>
-        <div>
-            <label asp-for="UserName"></label><br />
-            <input type="text" asp-for="UserName" />
-            <span asp-validation-for="UserName"></span>
-        </div>
-        <div>
-            <label asp-for="Password"></label><br />
-            <input asp-for="Password" />
-            <span asp-validation-for="Password"></span>
-        </div>
-        <div>
-            <input type="submit" value="Log In"   />
-        </div>
+
+<div class="user_data">
+    <div class="login_headers">
+        <span class="btn">
+            <p><a href="/Auth/Login" class="logInLink" style="color: #fff">Log in</a></p>
+        </span>
+    
+        <span class="btn">
+            <p><a href="/Auth/Register" class="SignUp" style="color: darkgrey;">Sign Up</a></p>
+        </span>
     </div>
 
-    <div class="form-group">
-        <a asp-action="ForgotPassword">Forgot Password</a>
-    </div>
+    <form asp-antiforgery="true" asp-action="Login" asp-controller="Auth">
+        <div class="tabContent">
+            <div class="fields">
+                <img src="/img/email.svg" alt="" class="left_side_imgs">
+                <input type="text" placeholder="Username" id="login" autocomplete="off" asp-for="UserName">
+                <img src="/img/valid_indicator.svg" alt="-" class="indicator">
+                <span asp-validation-for="UserName"></span>
+            </div>
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+            <div class="fields">
+                <img src="/img/password.svg" alt="" class="left_side_imgs">
+                <input type="password" placeholder="Password" id="password" autocomplete="off" asp-for="Password">
+                <img src="/img/valid_indicator.svg" alt="-" class="indicator">
+                <span asp-validation-for="Password"></span>
+            </div>
 
-</form>
+            <div class="recovery_link">
+                <a href="">Forgot my password</a>
+            </div>
+
+            <input type="submit" value="Log in" class="submit_button">
+
+        </div>
+    </form>
+</div>
+
+
+
+    @*<form asp-antiforgery="true" asp-action="Login" asp-controller="Auth">
+        <div>
+            <div class="validation" asp-validation-summary="ModelOnly"></div>
+            <div>
+                <label asp-for="UserName"></label><br />
+                <input type="text" asp-for="UserName" />
+                <span asp-validation-for="UserName"></span>
+            </div>
+            <div>
+                <label asp-for="Password"></label><br />
+                <input asp-for="Password" />
+                <span asp-validation-for="Password"></span>
+            </div>
+            <div>
+                <input type="submit" value="Log In"   />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <a asp-action="ForgotPassword">Forgot Password</a>
+        </div>
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+
+    </form>*@
