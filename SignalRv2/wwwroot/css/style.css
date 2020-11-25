@@ -1,0 +1,192 @@
+﻿@font-face {
+    font-family: 'JetBrainsMonoRegular';
+    src: url("../fonts/JetBrainsMonoRegular.eot");
+    src: url("../fonts/JetBrainsMonoRegular.eot") format("embedded-opentype"), url("../fonts/JetBrainsMonoRegular.woff2") format("woff2"), url("../fonts/JetBrainsMonoRegular.woff") format("woff"), url("../fonts/JetBrainsMonoRegular.ttf") format("truetype"), url("../fonts/JetBrainsMonoRegular.svg#JetBrainsMonoRegular") format("svg");
+}
+
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    margin: 0;
+    font-family: 'JetBrainsMonoRegular';
+    background: linear-gradient(90deg, #141E30, #243B55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main{
+  display: inline-block;
+}
+
+
+.logInForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.login_headers {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+    .login_headers a {
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .login_headers .btn {
+        margin-bottom: 1em;
+    }
+
+    .login_headers .not-active {
+        color: rgba(255, 255, 255, 0.5);
+        transition-duration: .3s;
+        transition-property: color;
+        transition-timing-function: ease-in-out;
+    }
+
+        .login_headers .not-active:hover {
+            color: #fff;
+        }
+
+.user_data{
+    width: 250px;
+    margin:auto;
+}
+
+.fields {
+    display: inline-block;
+    text-align:center;
+    width: 100%;
+    max-width: 300px;
+    background: #7F8895;
+    height: 1.6em;
+    margin-top: 0.5em;
+    border-radius: 30px;
+    padding-top: .2em;
+}
+
+    .fields img {
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .fields .left_side_imgs {
+        color: #B2B8BF;
+        width: 16px;
+        height: 16px;
+    }
+
+input[type="text"],
+input[type="password"] {
+    font-family: 'JetBrainsMonoRegular';
+    font-size: 10px;
+    color: #fff;
+    background: none;
+    border: none;
+    width: 66%;
+    outline: none;
+}
+
+    input[type="text"]::-webkit-input-placeholder,
+    input[type="password"]::-webkit-input-placeholder {
+        color: rgba(255, 255, 255, 0.4);
+        font-weight: 100;
+        font-size: 10px;
+        font-family: 'JetBrainsMonoRegular';
+    }
+
+    input[type="text"]:focus {
+        font-family: 'JetBrainsMonoRegular';
+        color: #fff;
+        background: none;
+        border: none;
+        font-size: 10px;
+        outline: none;
+    }
+
+    input[type="text"]:invalid {
+        border: 1px solid red;
+    }
+
+.recovery_link {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 10px;
+}
+
+    .recovery_link a {
+        text-decoration: none;
+        color: #ffffff80;
+    }
+
+        .recovery_link a:hover {
+            color: white;
+        }
+
+.submit_button {
+    border: none;
+    border-radius: 30px;
+    height: 2em;
+    width: 100%;
+    max-width: 50%;
+    justify-content: center;
+    display: flex;
+    margin: auto;
+    font-family: 'JetBrainsMonoRegular';
+    margin-top: 0.5em;
+    transition: all .4s ease-in;
+    margin-top: 32px;
+}
+
+    .submit_button:hover {
+        cursor: pointer;
+        background: none;
+        border: 2px solid white;
+        color: #fff;
+    }
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.activeOne {
+    opacity: 1;
+}
+
+
+.validation-summary-errors {
+    color: #b94a48;
+    font-size: 12px;
+    margin-top:20px;
+}
+
+    .validation-summary-errors li {
+        list-style-type: none;
+        margin-top: 5px;
+        text-align: center;
+    }
+
+    .validation-summary-errors ul{
+        padding:0;
+    }
+
+    .field-validation-error {
+        display: inline-block;
+        font-size: 10px;
+        color: #b94a48;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }

@@ -3,50 +3,67 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>Register</h1>
+@*<h1>Register</h1>*@
+
+
 
 @model SignalRv2.Models.ViewModels.RegisterViewModel;
 
-<form asp-antiforgery="true" asp-action="Register" asp-controller="Auth">
-    <div>
-        <div class="validation" asp-validation-summary="ModelOnly"></div>
-        <div>
-            <label asp-for="UserName"></label><br />
-            <input type="text" asp-for="UserName" />
-            <span asp-validation-for="UserName"></span>
-        </div>
-        <div>
-            <label asp-for="Email"></label><br />
-            <input type="text" asp-for="Email" />
-            <span asp-validation-for="Email"></span>
-        </div>
-        <div>
-            <label asp-for="FirstName"></label><br />
-            <input type="text" asp-for="FirstName" />
-            <span asp-validation-for="FirstName"></span>
-        </div>
-        <div>
-            <label asp-for="LastName"></label><br />
-            <input type="text" asp-for="LastName" />
-            <span asp-validation-for="LastName"></span>
-        </div>
-        <div>
-            <label asp-for="Password"></label><br />
-            <input asp-for="Password" />
-            <span asp-validation-for="Password"></span>
-        </div>
-        <div>
-            <label asp-for="ConfirmPassword"></label><br />
-            <input asp-for="ConfirmPassword" />
-            <span asp-validation-for="ConfirmPassword"></span>
-        </div>
-        <div>
-            <input type="submit" value="Sign Up"   />
-        </div>
+<div class="user_data">
+    <div class="login_headers">
+        <span class="btn">
+            <p><a href="/Auth/Login" class="logIn not-active">Log in</a></p>
+        </span>
+
+        <span class="btn">
+            <p><a href="/Auth/Register" class="SignUp">Sign Up</a></p>
+        </span>
     </div>
 
+
+    <form asp-antiforgery="true" asp-action="Register" asp-controller="Auth">
+        <div class="fields">
+            <img src="/img/email.svg" alt="" class="left_side_imgs">
+            <input type="text" autocomplete="off" placeholder="UserName" id="login" asp-for="UserName">
+            <img src="/img/valid_indicator.svg" alt="-" class="indicator">
+            <span asp-validation-for="UserName"></span>
+        </div>
+        <div class="fields">
+            <img src="/img/email.svg" alt="" class="left_side_imgs">
+            <input type="text" autocomplete="off" placeholder="Your email" id="login" asp-for="Email">
+            <img src="/img/valid_indicator.svg" alt="-" class="indicator">
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div class="fields">
+            <img src="/img/user-ico.svg" class="left_side_imgs">
+            <input type="text" autocomplete="off" placeholder="First name" id="login" asp-for="FirstName">
+            <img src="/img/valid_indicator.svg" alt="-" class="indicator">
+            <span asp-validation-for="FirstName"></span>
+        </div>
+        <div class="fields">
+            <img src="/img/user-ico.svg" class="left_side_imgs">
+            <input type="text" autocomplete="off" placeholder="Last name" id="login" asp-for="LastName">
+            <img src="/img/valid_indicator.svg" alt="-" class="indicator">
+            <span asp-validation-for="LastName"></span>
+        </div>
+        <div class="fields">
+            <img src="/img/password.svg" alt="" class="left_side_imgs">
+            <input type="password" autocomplete="off" placeholder="Password" id="password" asp-for="Password">
+            <img src="/img/valid_indicator.svg" alt="-" class="indicator">
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div class="fields">
+            <img src="/img/password.svg" alt="" class="left_side_imgs">
+            <input type="password" autocomplete="off" placeholder="Confirm Password" id="password" asp-for="ConfirmPassword">
+            <img src="/img/valid_indicator.svg" alt="-" class="indicator">
+            <span asp-validation-for="ConfirmPassword"></span>
+        </div>
+        <input type="submit" value="Sign up" class="submit_button" />    
+    </form>
+    
+    
+    
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     }
-
-</form>
+</div>
