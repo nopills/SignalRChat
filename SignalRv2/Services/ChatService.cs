@@ -45,5 +45,10 @@ namespace SignalRv2.Services
             });
             return dialogId;
         }
+
+        public bool IsValidUserInfo(string FName, string LName)
+        {
+            return (!String.IsNullOrEmpty(FName) && !String.IsNullOrEmpty(LName) && LName.Length > 1 && FName.Length > 1);
+        }
     }
 }

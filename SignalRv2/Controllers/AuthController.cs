@@ -33,18 +33,17 @@ namespace SignalRv2.Controllers
     
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("IM", "Home");
+            }
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
+        {          
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.UserName);
@@ -58,7 +57,7 @@ namespace SignalRv2.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, true);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("IM", "Home");
                 }
                 else
                 {
@@ -70,6 +69,10 @@ namespace SignalRv2.Controllers
 
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("IM", "Home");
+            }
             return View();
         }
 
@@ -79,7 +82,7 @@ namespace SignalRv2.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("IM", "Home");
             }
 
             if (ModelState.IsValid)
@@ -126,6 +129,10 @@ namespace SignalRv2.Controllers
 
         public IActionResult ForgotPassword()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("IM", "Home");
+            }
             return View();
         }
 
@@ -135,7 +142,7 @@ namespace SignalRv2.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("IM", "Home");
             }
 
             if (ModelState.IsValid)
@@ -158,11 +165,19 @@ namespace SignalRv2.Controllers
 
         public IActionResult ForgotPasswordConfirmation()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("IM", "Home");
+            }
             return View();
         }
 
         public IActionResult ResetPassword(string token, string email)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("IM", "Home");
+            }
             var model = new ResetPasswordViewModel { Token = token, Email = email};
             return View(model);
         }
@@ -171,7 +186,11 @@ namespace SignalRv2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
-            if(ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("IM", "Home");
+            }
+            if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null)
@@ -196,12 +215,21 @@ namespace SignalRv2.Controllers
 
         public IActionResult ResetPasswordConfirmation()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("IM", "Home");
+            }
             return View();
         }
 
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
-            if(token == null || email == null)
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("IM", "Home");
+            }
+
+            if (token == null || email == null)
             {
                 return View("Error");
             }
@@ -222,6 +250,10 @@ namespace SignalRv2.Controllers
 
         public IActionResult EmailConfirmation()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("IM", "Home");
+            }
             return View();
         }
     }

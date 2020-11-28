@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using SignalRv2.Hubs;
 using SignalRv2.Models;
 using SignalRv2.Models.ViewModels;
+using SignalRv2.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,33 +15,67 @@ using System.Threading.Tasks;
 
 namespace SignalRv2.Controllers
 {
+    [Authorize]
     [Route("[action]")]
     public class HomeController : Controller
     {
         public UserManager<User> _userManager { get; }
         public SignInManager<User> _signInManager { get; }
-        public HomeController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public IChatService _chatService;
+        public IChatRepo _chatRepo;
+        public IHubContext<ChatHub> _hubContext;
+     
+        public HomeController(UserManager<User> userManager, SignInManager<User> signInManager, IChatService chatService, IChatRepo chatRepo, IHubContext<ChatHub> hubContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _chatService = chatService;
+            _chatRepo = chatRepo;
+            _hubContext = hubContext;
         }
 
       
 
-        public IActionResult Index()
+        public IActionResult im()
         {
             return View();
         }
 
+        public IActionResult ChangeUserInfo()
+        {
+            return View();
+        }
 
-        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeUserInfo(ChangeUserInfoViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                User user = _chatRepo.GetUserByName(User.Identity.Name);
+                if(user != null)
+                {
+                    if (!_chatService.IsValidUserInfo(model.FirstName, model.LastName))
+                    {
+                        ModelState.AddModelError(string.Empty, $"Invalid FirstName or LastName");
+                    }
+                    await _chatRepo.ChangeUserInfo(user, model.FirstName, model.LastName, model.AvatarUrl);
+                    return RedirectToAction("IM");
+                } 
+                else
+                {
+                    ModelState.AddModelError(string.Empty, $"Cannot find user with username {User.Identity.Name}");
+                }
+            }
+            return View(model);
+        }
+
         public IActionResult ChangePassword()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
@@ -60,7 +97,7 @@ namespace SignalRv2.Controllers
                             ModelState.AddModelError(string.Empty, err.Description);
                         }
                     }
-             }
+                }
                 else
                 {
                     ModelState.AddModelError(string.Empty, $"Cannot find user with username {User.Identity.Name}");
@@ -69,13 +106,11 @@ namespace SignalRv2.Controllers
             return View(model);
         }
 
-        [Authorize]
         public IActionResult ChangePasswordConfirmation()
         {
             return View();
         }
 
-        [Authorize]
         public IActionResult Privacy()
         {
             return View();

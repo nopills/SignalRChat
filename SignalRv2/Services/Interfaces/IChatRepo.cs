@@ -7,6 +7,7 @@ namespace SignalRv2.Services.Interfaces
 {
     public interface IChatRepo: IDisposable
     {
+        Task ChangeUserInfo(User user, string FName, string LName, string AvatarUrl);
         User GetUserById(string userId);
         User GetUserByName(string name);
         IQueryable<Message> GetLastMessages(string dialogId);
