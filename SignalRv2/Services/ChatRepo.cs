@@ -93,5 +93,16 @@ namespace SignalRv2.Services
         {
             return _db.Dialogs.Where(x => x.CreatedBy == user);
         }
+
+        public async Task ChangeUserInfo(User user, string FName, string LName, string AvatarUrl)
+        {
+            user.FirstName = FName;
+            user.LastName = LName;
+            if(!String.IsNullOrEmpty(AvatarUrl))
+            {
+                user.AvatarUrl = AvatarUrl;
+            }
+            await SaveChangesAsync();
+        }
     }
 }

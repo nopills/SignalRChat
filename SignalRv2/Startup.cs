@@ -60,8 +60,8 @@ namespace SignalRv2
             services.ConfigureApplicationCookie(options =>
             {
                 options.AccessDeniedPath = "/AccessDenied";
-                options.LoginPath = new PathString("/Login");
-                options.LogoutPath = new PathString("/Logout");
+                options.LoginPath = new PathString("/Auth/Login");
+                options.LogoutPath = new PathString("/Auth/Logout");
                 options.SlidingExpiration = true;
                 options.ExpireTimeSpan = TimeSpan.FromDays(5);
             });
