@@ -402,14 +402,24 @@ input[type="text"]:focus {
     align-items: center;
 }
 
-.dialog-user-title h5{
-    font-size: 16px;
+
+.reciever-name {
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+    margin-right: 10px;
+}
+
+.sender-name {
+    font-size: 14px;
     font-weight: 400;
     margin: 0;
     margin-left: 10px;
 }
 
-.avatar{
+
+
+.avatar {
     margin-right: 10px;
     margin-left: 10px;
 }
