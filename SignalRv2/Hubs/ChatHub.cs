@@ -74,42 +74,41 @@ namespace SignalRv2.Hubs
             await Clients.User(recipient).SendAsync("Typing", $"{identityName} is typing...");
         }
 
-        public async Task SendPrivateMessage(string recipientName, string message)
+        public async Task<bool> SendPrivateMessage(string recipientName, string message)
         {
             string identityName = Context.User.Identity.Name;
-            if (recipientName != identityName)
-            {
-                
+           
+            if (recipientName != identityName && !String.IsNullOrEmpty(recipientName))
+            {              
                 if (message.Length > _settings.MaxMessageLength)
                 {
                     throw new HubException(String.Format("Message is too long", _settings.MaxMessageLength));
                 }
 
-
-
-                User currentUser = _chatRepo.GetUserByName(identityName);
+                User currentUser = _chatRepo.GetUserByName(identityName);                
                 User recipient = _chatRepo.GetUserByName(recipientName);
 
-                string dialogId = _chatRepo.HasDialog(identityName, recipientName);
-
-                if (dialogId == string.Empty)
+                if(recipient != null)
                 {
-                    dialogId = await _chatService.CreateDialog(currentUser, recipient, DateTimeOffset.Now);
+                    string dialogId = _chatRepo.HasDialog(identityName, recipientName);
+
+                    if (dialogId == string.Empty)
+                    {
+                        dialogId = await _chatService.CreateDialog(currentUser, recipient, DateTimeOffset.Now);
+                    }
+
+                    if (currentUser.Status != UserStatus.Online)
+                    {
+                        await SendStatus(UserStatus.Online);
+                    }
+
+                    await Clients.User(recipientName).SendAsync("RecieveMessage", Context.User.Identity.FullName(), message);
+                    await _chatService.AddMessage(currentUser, dialogId, message);
+                    return true;
                 }
-
-                if (currentUser.Status != UserStatus.Online)
-                {
-                    await SendStatus(UserStatus.Online);
-                }
-
-                await Clients.User(recipientName).SendAsync("RecieveMessage", identityName, message);
-                await _chatService.AddMessage(currentUser, dialogId, message);
-
-
-
-                // await Clients.Client(Context.ConnectionId).SendAsync("RecieveMessage", message);
-                //  await Clients.All.SendAsync("RecieveMessage", Context.UserIdentifier,  message);
+                return false;
             }
+            return false;
         }
 
         public async Task<IEnumerable<Message>> GetLastMessages(string dialogId)

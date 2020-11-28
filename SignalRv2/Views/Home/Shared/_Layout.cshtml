@@ -9,17 +9,14 @@
 </head>
 <body>
 
-    
-        @RenderBody()
-   
-    @*<footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2020 - SignalRv2 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            </div>
-        </footer>*@
+
+    @RenderBody()
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/signalr.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
