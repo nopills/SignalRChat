@@ -17,7 +17,7 @@ namespace SignalRv2.Hubs
         AppSettings _settings;
         IChatService _chatService;
         IChatRepo _chatRepo;
-        private readonly IUserIdProvider _userProvider;
+    
 
         public ChatHub(AppSettings settings, IChatService chatService, IChatRepo chatRepo)
         {
@@ -90,20 +90,20 @@ namespace SignalRv2.Hubs
 
                 if(recipient != null)
                 {
-                    string dialogId = _chatRepo.HasDialog(identityName, recipientName);
+                    Dialog dialog = _chatRepo.HasDialog(identityName, recipientName);
 
-                    if (dialogId == string.Empty)
+                    if (dialog == null)
                     {
-                        dialogId = await _chatService.CreateDialog(currentUser, recipient, DateTimeOffset.Now);
+                        dialog = await _chatService.CreateDialog(currentUser, recipient, message);
                     }
-
+                    
                     if (currentUser.Status != UserStatus.Online)
                     {
                         await SendStatus(UserStatus.Online);
                     }
 
                     await Clients.User(recipientName).SendAsync("RecieveMessage", Context.User.Identity.FullName(), message);
-                    await _chatService.AddMessage(currentUser, dialogId, message);
+                    await _chatService.AddMessage(currentUser, dialog, message);
                     return true;
                 }
                 return false;
@@ -114,7 +114,6 @@ namespace SignalRv2.Hubs
         public async Task<IEnumerable<Message>> GetLastMessages(string dialogId)
         {
             return await _chatRepo.GetLastMessages(dialogId).ToListAsync();
-        }
-
+        }    
     }
 }

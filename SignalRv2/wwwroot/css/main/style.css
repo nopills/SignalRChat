@@ -46,10 +46,10 @@ background-color: #495366;
       margin: 0;
   }
 
-  .sidebar-group{
-      width:30%;
- 
-  }
+.sidebar-group {
+    width: 30%;
+    min-width: 250px;
+}
 
   .sidebar-group-header{
     display: flex;
@@ -78,17 +78,21 @@ background-color: #495366;
     height: 40px;
 }
 
+  .user-title{
+      padding-top: 5px;
+  }
 
 
 .user-title h3{
     margin-top: 0;
     margin-bottom: 10px;
-    font-size: 23px;
+    font-size: 16px;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .status-active{
-    font-size: 20px; 
+    font-size: 16px; 
     font-style: normal;
 }
 
@@ -176,10 +180,11 @@ input[type="text"]:focus {
     margin-top: 4px;
 }
 
-.sidebar-body{
-  box-sizing: border-box;
-  max-height: 65vh;
-  overflow-y: scroll;
+.sidebar-body {
+    box-sizing: border-box;
+    max-height: 65vh;
+    min-height: 65vh;
+    overflow-y: scroll;
 }
 
 .list-group{
@@ -211,38 +216,43 @@ input[type="text"]:focus {
 .group-item figure{
     margin: 0;
     width: 30%;
-    padding: 15px 0px 15px 25px;
+    padding: 15px 0px 5px 5px;
 }
 
 .group-item p{
  margin:0;
- font-size: 16px;
+ font-size: 14px;
  white-space: nowrap;
  overflow: hidden
 }
 
-.user-name{
+.user-name {
+    font-size: 14px;
     font-weight: 500;
-    font-size: 18px;
     margin: 0;
     margin-bottom: .2em;
     white-space: nowrap;
     width: 100%;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .message-time{
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .user-list-body{
     padding-top: 1em;
     width: 50%;
-
 }
 
-.user-list-body p {
-    margin-bottom: 0.1em;
-}
+    .user-list-body p {
+        margin-bottom: 0.1em;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
 
 
@@ -285,6 +295,7 @@ input[type="text"]:focus {
 .chat {
     position: relative;
     width: 70%;
+    min-width: 350px;
     margin-left: 5%;
 }
 
@@ -293,6 +304,7 @@ input[type="text"]:focus {
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 3em;
+    align-items: center;
 }
 
 
@@ -301,6 +313,12 @@ input[type="text"]:focus {
     min-height: 70vh;
     max-height: 70vh;
   
+}
+
+.reciever-name {
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0;
 }
 
 .search-message {
@@ -319,15 +337,9 @@ input[type="text"]:focus {
 
 }
 
-.reciever-name {
-    margin: 0;
-    font-weight: 500;
-    font-size: 1.2em;
-    margin-bottom: 0.3em;
-}
 
 .reciver-status-active{
-    font-size: 1em;
+    font-size: 16px;
     
 }
 
@@ -403,12 +415,6 @@ input[type="text"]:focus {
 }
 
 
-.reciever-name {
-    font-size: 14px;
-    font-weight: 400;
-    margin: 0;
-    margin-right: 10px;
-}
 
 .sender-name {
     font-size: 14px;
@@ -468,7 +474,7 @@ font-size: 0.7em;
     color:#fff;
     border: 1px solid transparent;
     border-radius: .25rem;  
-    width: 8%;
+    min-width: 8%;
     font-family: inherit;
     transition: all .2s ease-in;
     outline: none;

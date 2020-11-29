@@ -11,13 +11,17 @@ namespace SignalRv2.Services.Interfaces
         User GetUserById(string userId);
         User GetUserByName(string name);
         IQueryable<Message> GetLastMessages(string dialogId);
-        Message GetMessageById(string messageId);
+        IQueryable<Message> GetUnreadMessages(string dialogId);
+        long GetCountUnreadMessages(string dialogId);
+        Message GetMessageById(string messageId);       
         IQueryable<User> GetAllUsers();
         IQueryable<Dialog> GetAllDialogs(User user);
-        string HasDialog(string owner, string recipeint);
+        IQueryable<Dialog> GetLastDialogs(User user);
+        Dialog GetDialogById(string Id);
+        Dialog HasDialog(string owner, string recipeint);
         Task AddUser(User user);
         Task AddMessage(Message message);
-        Task<string> AddDialog(Dialog dialog);
+        Task AddDialog(Dialog dialog);
 
         void SaveChanges();
         Task SaveChangesAsync();

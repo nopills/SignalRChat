@@ -10,8 +10,8 @@ using SignalRv2.Models;
 namespace SignalRv2.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20201122152255_Init01")]
-    partial class Init01
+    [Migration("20201129121616_2")]
+    partial class _2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -152,36 +152,9 @@ namespace SignalRv2.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SignalRv2.Models.ChatClient", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AvatarUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("LastActivity")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ChatClients");
-                });
-
             modelBuilder.Entity("SignalRv2.Models.Dialog", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ChatClientId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedById")
@@ -190,12 +163,16 @@ namespace SignalRv2.Migrations
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<DateTimeOffset>("LastActivity")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("LastMessage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("RecieverId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ChatClientId");
 
                     b.HasIndex("CreatedById");
 
@@ -214,6 +191,9 @@ namespace SignalRv2.Migrations
 
                     b.Property<string>("DialogId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -255,6 +235,9 @@ namespace SignalRv2.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsBanned")
                         .HasColumnType("bit");
 
@@ -292,6 +275,9 @@ namespace SignalRv2.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -364,21 +350,8 @@ namespace SignalRv2.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SignalRv2.Models.ChatClient", b =>
-                {
-                    b.HasOne("SignalRv2.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("SignalRv2.Models.Dialog", b =>
                 {
-                    b.HasOne("SignalRv2.Models.ChatClient", null)
-                        .WithMany("Dialogs")
-                        .HasForeignKey("ChatClientId");
-
                     b.HasOne("SignalRv2.Models.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById");
@@ -405,11 +378,6 @@ namespace SignalRv2.Migrations
                     b.Navigation("Dialog");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SignalRv2.Models.ChatClient", b =>
-                {
-                    b.Navigation("Dialogs");
                 });
 
             modelBuilder.Entity("SignalRv2.Models.Dialog", b =>

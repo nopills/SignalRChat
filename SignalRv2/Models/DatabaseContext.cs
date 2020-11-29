@@ -18,7 +18,8 @@ namespace SignalRv2.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Dialog>().HasMany(m => m.Messages);
-
+            modelBuilder.Entity<Dialog>().HasOne(c => c.CreatedBy);
+            modelBuilder.Entity<Dialog>().HasOne(c => c.Reciever);
             base.OnModelCreating(modelBuilder);
         }
     }

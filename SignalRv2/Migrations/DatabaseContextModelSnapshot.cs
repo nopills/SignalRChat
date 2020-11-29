@@ -161,6 +161,12 @@ namespace SignalRv2.Migrations
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<DateTimeOffset>("LastActivity")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("LastMessage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("RecieverId")
                         .HasColumnType("nvarchar(450)");
 

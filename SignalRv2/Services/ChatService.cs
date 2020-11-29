@@ -2,6 +2,8 @@
 using SignalRv2.Models;
 using SignalRv2.Services.Interfaces;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace SignalRv2.Services
 {
@@ -12,14 +14,14 @@ namespace SignalRv2.Services
         {
             _chatRepo = chatRepo;
         }
-        public async Task<Message> AddMessage(User user, string dialogId, string content)
+        public async Task<Message> AddMessage(User user, Dialog dialog, string content)
         {
             var message = new Message
             {
                 Content = content,
                 When = DateTimeOffset.Now,
                 User = user,
-                DialogId = dialogId,
+                Dialog = dialog,
                 IsRead = false
             };
 
@@ -35,16 +37,21 @@ namespace SignalRv2.Services
             await _chatRepo.SaveChangesAsync();
         }
 
-        public async Task<string> CreateDialog(User cretedBy, User reciever, DateTimeOffset dateTime)
+        public async Task<Dialog> CreateDialog(User createdBy, User reciever, string message)
         {
-            string dialogId = await _chatRepo.AddDialog(new Dialog
+            Dialog dialog = new Dialog
             {
-                CreatedBy = cretedBy,
+                CreatedBy = createdBy,
                 Reciever = reciever,
-                CreatedDate = dateTime
-            });
-            return dialogId;
+                CreatedDate = DateTimeOffset.Now,
+                LastActivity = DateTimeOffset.Now,
+                LastMessage = message
+            };
+            await _chatRepo.AddDialog(dialog);
+            return dialog;
         }
+
+      
 
         public bool IsValidUserInfo(string FName, string LName)
         {

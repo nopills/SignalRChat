@@ -2,6 +2,10 @@
     ViewData["Title"] = "Login";
 }
 
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 
 
 @model SignalRv2.Models.ViewModels.LoginViewModel;
@@ -12,7 +16,7 @@
         <span class="btn">
             <p><a href="/Auth/Login" class="logInLink" style="color: #fff">Log in</a></p>
         </span>
-    
+
         <span class="btn">
             <p><a href="/Auth/Register" class="SignUp" style="color: darkgrey;">Sign Up</a></p>
         </span>
@@ -46,7 +50,7 @@
 
 
 
-    @*<form asp-antiforgery="true" asp-action="Login" asp-controller="Auth">
+@*<form asp-antiforgery="true" asp-action="Login" asp-controller="Auth">
         <div>
             <div class="validation" asp-validation-summary="ModelOnly"></div>
             <div>
