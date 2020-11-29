@@ -16,11 +16,10 @@ namespace SignalRv2.Services
             _db = db;
         }       
 
-        public async Task<string> AddDialog(Dialog dialog)
+        public async Task AddDialog(Dialog dialog)
         {
             await _db.Dialogs.AddAsync(dialog);
             await _db.SaveChangesAsync();
-            return dialog.Id;
         }
 
         public async Task AddMessage(Message message)
@@ -70,7 +69,7 @@ namespace SignalRv2.Services
             await _db.SaveChangesAsync();
         }      
 
-        public string HasDialog(string owner, string recipeint)
+        public Dialog HasDialog(string owner, string recipeint)
         {
             Dialog dialog = _db.Dialogs.FirstOrDefault(x => x.CreatedBy.UserName == owner && x.Reciever.UserName == recipeint);
             if (dialog == null)
@@ -78,10 +77,10 @@ namespace SignalRv2.Services
                 dialog = _db.Dialogs.FirstOrDefault(x => x.CreatedBy.UserName == recipeint && x.Reciever.UserName == owner);
                 if (dialog == null)
                 {
-                    return String.Empty;
+                    return null;
                 }
             }
-            return dialog.Id;
+            return dialog;
         }
 
         public IQueryable<Message> GetLastMessages(string dialogId)
@@ -91,7 +90,8 @@ namespace SignalRv2.Services
 
         public IQueryable<Dialog> GetAllDialogs(User user)
         {
-            return _db.Dialogs.Where(x => x.CreatedBy == user);
+            return _db.Dialogs;
+           // return _db.Dialogs.Where(x => x.CreatedBy == user) == null ? _db.Dialogs.Where(x => x.Reciever == user) : null;
         }
 
         public async Task ChangeUserInfo(User user, string FName, string LName, string AvatarUrl)
@@ -103,6 +103,31 @@ namespace SignalRv2.Services
                 user.AvatarUrl = AvatarUrl;
             }
             await SaveChangesAsync();
+        }
+
+        public Dialog GetDialogById(string Id)
+        {
+            return _db.Dialogs.FirstOrDefault(x => x.Id == Id);
+            // return _db.Dialogs.Where(x => x.CreatedBy == user || x.Reciever == user).OrderBy(y => y.CreatedBy).Take(20);        
+        }
+
+        public IQueryable<Dialog> GetLastDialogs(User user)
+        {
+            IQueryable<Dialog> ownedDialogs = _db.Dialogs.Where(x => x.CreatedBy == user).Take(30);
+            IQueryable<Dialog> recievedDialogs = _db.Dialogs.Where(x => x.RecieverId == user.Id).Take(30);
+            IQueryable<Dialog> dialogList = ownedDialogs.Union(recievedDialogs).OrderBy(x => x.CreatedDate).Take(20);
+            return dialogList;
+            // return _db.Dialogs.Where(x => x.CreatedBy == user || x.Reciever == user).OrderBy(y => y.CreatedBy).Take(20);        
+        }
+
+        public IQueryable<Message> GetUnreadMessages(string dialogId)
+        {
+            return _db.Messages.Where(d => d.DialogId == dialogId && d.IsRead == false);
+        }
+
+        public long GetCountUnreadMessages(string dialogId)
+        {
+            return _db.Messages.Where(d => d.DialogId == dialogId && d.IsRead == false).Count();
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SignalRv2.Hubs;
 using SignalRv2.Models;
@@ -36,10 +37,48 @@ namespace SignalRv2.Controllers
 
       
 
-        public IActionResult im()
+        public async Task<IActionResult> im()
         {
-            return View();
+            List<DialogViewModel> dialogViewModels = new List<DialogViewModel>();
+            User user = _chatRepo.GetUserByName(User.Identity.Name);
+            if (user != null)
+            {
+                List<Dialog> lastDialogs = await _chatRepo.GetLastDialogs(user).ToListAsync();
+                if (lastDialogs != null && lastDialogs.Count != 0)
+                {
+                    foreach (var a in lastDialogs)
+                    {
+                        if (a.CreatedById == user.Id)
+                        {
+                            var reciever = _chatRepo.GetUserById(a.RecieverId);
+                            dialogViewModels.Add(new DialogViewModel
+                            {
+                                LastActivity = a.LastActivity,
+                                LastMessage = a.LastMessage,
+                                RecieverName = String.Format("{0} {1}", reciever.FirstName, reciever.LastName),
+                                UnreadMessage = _chatRepo.GetCountUnreadMessages(a.Id)
+                            });
+                        }
+                        else
+                        if (a.RecieverId == user.Id)
+                        {
+                            var sender = _chatRepo.GetUserById(a.CreatedById);
+                            dialogViewModels.Add(new DialogViewModel
+                            {
+                                LastActivity = a.LastActivity,
+                                LastMessage = a.LastMessage,
+                                RecieverName = String.Format("{0} {1}", sender.FirstName, sender.LastName),
+                                UnreadMessage = _chatRepo.GetCountUnreadMessages(a.Id)
+                            });
+                        }                       
+                    }
+                    return View(dialogViewModels);
+                }                              
+            }
+            return View(dialogViewModels);
         }
+            
+        
 
         public IActionResult ChangeUserInfo()
         {

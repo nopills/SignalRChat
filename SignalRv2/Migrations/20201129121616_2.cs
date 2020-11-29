@@ -2,7 +2,7 @@
 
 namespace SignalRv2.Migrations
 {
-    public partial class Init04 : Migration
+    public partial class _2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SignalRv2.Migrations
 {
-    public partial class Init01 : Migration
+    public partial class _1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,9 +29,11 @@ namespace SignalRv2.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     RegisteredDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     LastActivity = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     IsBanned = table.Column<bool>(type: "bit", nullable: false),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -159,27 +161,6 @@ namespace SignalRv2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChatClients",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    LastActivity = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ChatClients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ChatClients_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Dialogs",
                 columns: table => new
                 {
@@ -187,7 +168,8 @@ namespace SignalRv2.Migrations
                     CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     RecieverId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ChatClientId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    LastActivity = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    LastMessage = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -204,12 +186,6 @@ namespace SignalRv2.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Dialogs_ChatClients_ChatClientId",
-                        column: x => x.ChatClientId,
-                        principalTable: "ChatClients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,7 +196,8 @@ namespace SignalRv2.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     When = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DialogId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    DialogId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -279,16 +256,6 @@ namespace SignalRv2.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatClients_UserId",
-                table: "ChatClients",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Dialogs_ChatClientId",
-                table: "Dialogs",
-                column: "ChatClientId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Dialogs_CreatedById",
                 table: "Dialogs",
                 column: "CreatedById");
@@ -334,9 +301,6 @@ namespace SignalRv2.Migrations
 
             migrationBuilder.DropTable(
                 name: "Dialogs");
-
-            migrationBuilder.DropTable(
-                name: "ChatClients");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

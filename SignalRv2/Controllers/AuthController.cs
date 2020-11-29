@@ -94,17 +94,16 @@ namespace SignalRv2.Controllers
                 if (result.Succeeded)
                 {
                     List<Claim> claims = new List<Claim>()
-                    {
-                      new Claim(Constants.Identifier, user.Id),
+                    {                    
                       new Claim("FullName", string.Format("{0} {1}", model.FirstName, model.LastName))
                     };
 
                     await _userManager.AddClaimsAsync(user, claims);
 
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callback = Url.Action("ConfirmEmail", "Auth", new { token, email = model.Email }, Request.Scheme);
-                    var message = new EmailMessage(model.Email, "Confirmation email", callback);
-                    await _emailSender.SendEmailAsync(message);
+                    //var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var callback = Url.Action("ConfirmEmail", "Auth", new { token, email = model.Email }, Request.Scheme);
+                    //var message = new EmailMessage(model.Email, "Confirmation email", callback);
+                    //await _emailSender.SendEmailAsync(message);
 
                     // await _signInManager.SignInAsync(user, true);
 

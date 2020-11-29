@@ -10,8 +10,8 @@ using SignalRv2.Models;
 namespace SignalRv2.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20201125112518_Init04")]
-    partial class Init04
+    [Migration("20201129120957_1")]
+    partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -162,6 +162,12 @@ namespace SignalRv2.Migrations
 
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("LastActivity")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("LastMessage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RecieverId")
                         .HasColumnType("nvarchar(450)");

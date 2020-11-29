@@ -1,7 +1,7 @@
 ﻿@font-face {
     font-family: 'JetBrainsMonoRegular';
-    src: url("../fonts/JetBrainsMonoRegular.eot");
-    src: url("../fonts/JetBrainsMonoRegular.eot") format("embedded-opentype"), url("../fonts/JetBrainsMonoRegular.woff2") format("woff2"), url("../fonts/JetBrainsMonoRegular.woff") format("woff"), url("../fonts/JetBrainsMonoRegular.ttf") format("truetype"), url("../fonts/JetBrainsMonoRegular.svg#JetBrainsMonoRegular") format("svg");
+    src: url("../../css/fonts/JetBrainsMonoRegular.eot");
+    src: url("../../css/fonts/JetBrainsMonoRegular.eot") format("embedded-opentype"), url("../../css/fonts/JetBrainsMonoRegular.woff2") format("woff2"), url("../../css/fonts/JetBrainsMonoRegular.woff") format("woff"), url("../../css/fonts/JetBrainsMonoRegular.ttf") format("truetype"), url("../../css/fonts/JetBrainsMonoRegular.svg#JetBrainsMonoRegular") format("svg");
 }
 
 
