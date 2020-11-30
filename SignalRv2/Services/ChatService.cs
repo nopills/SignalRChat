@@ -24,6 +24,8 @@ namespace SignalRv2.Services
                 Dialog = dialog,
                 IsRead = false
             };
+           
+            dialog.LastMessage = content;
 
             await _chatRepo.AddMessage(message);
 

@@ -256,12 +256,12 @@ input[type="text"]:focus {
 
 
 
-.user-list-actions-active{
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   width: 20%;
-   background-color: #6F7683;
+.group-item.group-item-active > .user-list-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    background-color: #6F7683;
 }
 
 .user-list-actions{
@@ -489,6 +489,7 @@ font-size: 0.7em;
     border-color: #2c21c8;
     
   }
+
 
 /* .btn-primary{
     padding:0;

@@ -7,8 +7,11 @@ namespace SignalRv2.Models.ViewModels
 {
     public class DialogViewModel
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string DialogId { get; set; }
+        public string SenderId { get; set; }
         public string RecieverName { get; set; }
+        public string RecieverUsername { get; set; }
+        
         public string LastMessage { get; set; }
         public DateTimeOffset LastActivity { get; set; }
         public long UnreadMessage { get; set; }

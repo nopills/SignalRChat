@@ -85,7 +85,7 @@ namespace SignalRv2.Services
 
         public IQueryable<Message> GetLastMessages(string dialogId)
         {
-            return _db.Messages.Where(d => d.DialogId == dialogId).OrderBy(x => x.When).Take(100);
+            return _db.Messages.Include(x => x.User).Where(d => d.DialogId == dialogId).OrderBy(p => p.When).Take(100);
         }
 
         public IQueryable<Dialog> GetAllDialogs(User user)
@@ -106,18 +106,17 @@ namespace SignalRv2.Services
         }
 
         public Dialog GetDialogById(string Id)
-        {
+        {            
             return _db.Dialogs.FirstOrDefault(x => x.Id == Id);
-            // return _db.Dialogs.Where(x => x.CreatedBy == user || x.Reciever == user).OrderBy(y => y.CreatedBy).Take(20);        
-        }
+                  }
 
         public IQueryable<Dialog> GetLastDialogs(User user)
         {
-            IQueryable<Dialog> ownedDialogs = _db.Dialogs.Where(x => x.CreatedBy == user).Take(30);
-            IQueryable<Dialog> recievedDialogs = _db.Dialogs.Where(x => x.RecieverId == user.Id).Take(30);
-            IQueryable<Dialog> dialogList = ownedDialogs.Union(recievedDialogs).OrderBy(x => x.CreatedDate).Take(20);
-            return dialogList;
-            // return _db.Dialogs.Where(x => x.CreatedBy == user || x.Reciever == user).OrderBy(y => y.CreatedBy).Take(20);        
+            return _db.Dialogs.Include(i => i.Reciever)
+                .Include(i => i.CreatedBy)
+                .OrderByDescending(x => x.CreatedDate)
+                .Where(x => x.CreatedBy == user || x.Reciever == user)
+                .Take(20);
         }
 
         public IQueryable<Message> GetUnreadMessages(string dialogId)
@@ -129,5 +128,7 @@ namespace SignalRv2.Services
         {
             return _db.Messages.Where(d => d.DialogId == dialogId && d.IsRead == false).Count();
         }
+
+
     }
 }
