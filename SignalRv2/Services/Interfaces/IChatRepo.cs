@@ -13,7 +13,7 @@ namespace SignalRv2.Services.Interfaces
         IQueryable<Message> GetLastMessages(string dialogId);
         IQueryable<Message> GetUnreadMessages(string dialogId);
         long GetCountUnreadMessages(string dialogId);
-        Message GetMessageById(string messageId);       
+        Message GetMessageById(string messageId);
         IQueryable<User> GetAllUsers();
         IQueryable<Dialog> GetAllDialogs(User user);
         IQueryable<Dialog> GetLastDialogs(User user);

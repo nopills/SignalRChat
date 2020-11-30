@@ -1,9 +1,17 @@
 ﻿@using SignalRv2.Abstract
 @using System.Globalization;
-@model List<SignalRv2.Models.ViewModels.DialogViewModel>
+@*@model List<SignalRv2.Models.ViewModels.DialogViewModel>*@
+
 @{
     Layout = "~/Views/Home/Shared/_Layout.cshtml";
 }
+
+@*<script>
+    async function GetDialogs() {
+        const response = await fetch('https://localhost:44399/GetDialogs');
+    }
+    GetDialogs();
+</script>*@
 
 
 <!-- content -->
@@ -35,35 +43,7 @@
         </form>
         <div class="sidebar-body">
             <ul class="list-group">
-
-
-                @* Here is User-List-Group *@
-
-
-                @foreach (var dialogUser in Model)
-                {
-                  
-                    <li class="group-item">
-                <figure class="avatar-status-active">
-                    <img src="/img/avatars/women_avatar5.jpg" alt="user-avatar" class="avatar avatar-circle">
-                </figure>
-                <div class="user-list-body">
-                    <h5 class="user-name">
-                        @dialogUser.RecieverName
-                    </h5>
-                    <p>@dialogUser.LastMessage</p>
-                    <small class="message-time">@dialogUser.LastActivity.ToString("hh:mm tt", CultureInfo.GetCultureInfo("en-US"))</small>
-                </div>
-                <div class="user-list-actions">
-                    <div class="new-message-count">
-                        @dialogUser.UnreadMessage
-                    </div>
-                </div>
-            </li>
-
-                }
-
-
+                @* Here is User-List-Group *@             
             </ul>
         </div>
 

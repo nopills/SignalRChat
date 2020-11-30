@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using SignalRv2.Abstract;
 using SignalRv2.Models;
+using SignalRv2.Models.ViewModels;
 using SignalRv2.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Globalization;
 using System.Threading.Tasks;
 
@@ -102,6 +104,7 @@ namespace SignalRv2.Hubs
                         await SendStatus(UserStatus.Online);
                     }
 
+                    
                     await Clients.User(recipientName).SendAsync("RecieveMessage", Context.User.Identity.FullName(), message);
                     await _chatService.AddMessage(currentUser, dialog, message);
                     return true;
@@ -114,6 +117,48 @@ namespace SignalRv2.Hubs
         public async Task<IEnumerable<Message>> GetLastMessages(string dialogId)
         {
             return await _chatRepo.GetLastMessages(dialogId).ToListAsync();
-        }    
+        }
+
+
+        public async Task<IEnumerable<DialogViewModel>> GetDialogs()
+        {
+            string identityName = Context.User.Identity.Name;
+            User user = _chatRepo.GetUserByName(identityName);
+            if (user != null)
+            {
+                List<Dialog> lastDialogs = await _chatRepo.GetLastDialogs(user).ToListAsync();
+                List<DialogViewModel> dialogViewModels = lastDialogs.Select(c => c.CreatedBy == user ?
+                     new DialogViewModel
+                     {
+                         DialogId = c.Id,
+                         LastActivity = c.LastActivity,
+                         LastMessage = c.LastMessage,
+                         SenderId = c.CreatedById,
+                         RecieverName = String.Format("{0} {1}", c.Reciever.FirstName, c.Reciever.LastName),    
+                         RecieverUsername = c.Reciever.UserName,
+                         UnreadMessage = _chatRepo.GetCountUnreadMessages(c.Id)
+                     } :
+                    new DialogViewModel
+                    {
+                        DialogId = c.Id,
+                        LastActivity = c.LastActivity,
+                        LastMessage = c.LastMessage,
+                        SenderId = c.RecieverId,
+                        RecieverName = String.Format("{0} {1}", c.CreatedBy.FirstName, c.CreatedBy.LastName),
+                        RecieverUsername = c.CreatedBy.UserName,
+                        UnreadMessage = _chatRepo.GetCountUnreadMessages(c.Id)
+                    }
+                    ).ToList();
+                // await Clients.User(identityName).SendAsync("GetLastDialogs", dialogViewModels);
+                return dialogViewModels;
+            }
+            return null;
+        }
+
+
+        public async Task<IEnumerable<Message>> GetMessages(string dialogId)
+        {
+            return await _chatRepo.GetLastMessages(dialogId).ToListAsync(); ;
+        }
     }
 }

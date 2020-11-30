@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - SignalRv2</title>
     <link rel="stylesheet" href="../../css/main/style.css" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
@@ -14,9 +15,10 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/microsoft/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/signalr.js"></script>
+    <script type="module" src="~/js/signalr.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+
 </body>
 </html>
