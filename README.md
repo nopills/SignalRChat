@@ -2,7 +2,7 @@
 🍉🍉🍉🍉🍉🍉🍉🍉🍉
 
 ### 📜 Description
-Just chat coded on C# / ASP.NET CORE with SignalR Core Tehcnology
+Just chat coded on C# / ASP.NET CORE with SignalR Core Technology
 
 ### 🔧 Technologies & Tools
 ![](https://img.shields.io/badge/Code-C%23-blue)
