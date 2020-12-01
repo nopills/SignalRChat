@@ -102,6 +102,7 @@ namespace SignalRv2.Hubs
                     {
                         dialog = await _chatService.CreateDialog(currentUser, recipient, message);
                     }
+                 
                     
                     if (currentUser.Status != UserStatus.Online)
                     {

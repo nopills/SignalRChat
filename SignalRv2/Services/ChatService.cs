@@ -26,7 +26,8 @@ namespace SignalRv2.Services
             };
            
             dialog.LastMessage = content;
-
+            dialog.LastActivity = DateTimeOffset.Now;
+           
             await _chatRepo.AddMessage(message);
 
             return message;

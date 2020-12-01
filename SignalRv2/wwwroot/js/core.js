@@ -152,7 +152,7 @@ function AddIncomingMessage(message) {
     let content = message.content;
     content = content.replace(/<\/?[^>]+(>|$)/g, "");
 
-    let name = message.user.userName;
+    let name = message.user.firstName + " " + message.user.lastName;
     name = name.replace(/<\/?[^>]+(>|$)/g, "");
 
     let time = new Date(message.when);

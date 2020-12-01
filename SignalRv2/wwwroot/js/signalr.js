@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
          }
     });
+
     /* ~~ */
     if (sendBtn != null) {
      sendBtn.addEventListener("click", function (e) {
