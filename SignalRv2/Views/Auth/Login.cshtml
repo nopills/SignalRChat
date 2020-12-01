@@ -1,14 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Login";
-}
+﻿@model SignalRv2.Models.ViewModels.LoginViewModel;
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Login";
 }
 
-
-
-@model SignalRv2.Models.ViewModels.LoginViewModel;
 
 
 <div class="user_data">
@@ -39,7 +35,7 @@
             </div>
 
             <div class="recovery_link">
-                <a href="">Forgot my password</a>
+                <a href="/Auth/ForgotPassword">Forgot my password</a>
             </div>
 
             <input type="submit" value="Log in" class="submit_button">

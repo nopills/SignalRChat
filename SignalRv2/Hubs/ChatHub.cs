@@ -44,12 +44,7 @@ namespace SignalRv2.Hubs
 
         public async Task SendStatus(UserStatus status)
         {
-            User currentUser = _chatRepo.GetUserByName(Context.User.Identity.Name);          
-            //int minFromLastActivity = Convert.ToInt32((DateTimeOffset.UtcNow - currentUser.LastActivity).ToString("mm"));
-            //if(minFromLastActivity > 5)
-            //{
-
-            //}
+            User currentUser = _chatRepo.GetUserByName(Context.User.Identity.Name);               
             await _chatService.ChangeStatus(currentUser, status);
             await Clients.All.SendAsync("CheckStatus", Context.User.Identity.Name, status.ToString());
         }
@@ -63,11 +58,14 @@ namespace SignalRv2.Hubs
 
         public async Task MarkAsRead(string[] messageId)
         {
-            foreach(var id in messageId)
+            if(messageId != null)
             {
-                _chatRepo.GetMessageById(id).IsRead = true;
+                foreach (var id in messageId)
+                {
+                    _chatRepo.GetMessageById(id).IsRead = true;
+                }
+                await _chatRepo.SaveChangesAsync();
             }
-            await _chatRepo.SaveChangesAsync();
         }
 
         public async Task Typing(string recipient)
@@ -87,6 +85,12 @@ namespace SignalRv2.Hubs
                     throw new HubException(String.Format("Message is too long", _settings.MaxMessageLength));
                 }
 
+                if (message.Length <= 0)
+                {
+                    throw new HubException(String.Format("Message is too low", _settings.MaxMessageLength));
+                }
+
+
                 User currentUser = _chatRepo.GetUserByName(identityName);                
                 User recipient = _chatRepo.GetUserByName(recipientName);
 
@@ -105,7 +109,7 @@ namespace SignalRv2.Hubs
                     }
 
                     
-                    await Clients.User(recipientName).SendAsync("RecieveMessage", Context.User.Identity.FullName(), message);
+                    await Clients.User(recipientName).SendAsync("RecieveMessage", Context.User.Identity.FullName(), identityName, message);
                     await _chatService.AddMessage(currentUser, dialog, message);
                     return true;
                 }
@@ -131,22 +135,22 @@ namespace SignalRv2.Hubs
                      new DialogViewModel
                      {
                          DialogId = c.Id,
-                         LastActivity = c.LastActivity,
+                         LastActivity = c.LastActivity.ToString("hh:mm tt", new CultureInfo("en-US")),
                          LastMessage = c.LastMessage,
                          SenderId = c.CreatedById,
                          RecieverName = String.Format("{0} {1}", c.Reciever.FirstName, c.Reciever.LastName),    
                          RecieverUsername = c.Reciever.UserName,
-                         UnreadMessage = _chatRepo.GetCountUnreadMessages(c.Id)
+                         UnreadMessage = _chatRepo.GetCountUnreadMessages(c.Id, user.Id)
                      } :
                     new DialogViewModel
                     {
                         DialogId = c.Id,
-                        LastActivity = c.LastActivity,
+                        LastActivity = c.LastActivity.ToString("hh:mm tt", new CultureInfo("en-US")),
                         LastMessage = c.LastMessage,
                         SenderId = c.RecieverId,
                         RecieverName = String.Format("{0} {1}", c.CreatedBy.FirstName, c.CreatedBy.LastName),
                         RecieverUsername = c.CreatedBy.UserName,
-                        UnreadMessage = _chatRepo.GetCountUnreadMessages(c.Id)
+                        UnreadMessage = _chatRepo.GetCountUnreadMessages(c.Id, user.Id)
                     }
                     ).ToList();
                 // await Clients.User(identityName).SendAsync("GetLastDialogs", dialogViewModels);
@@ -158,7 +162,8 @@ namespace SignalRv2.Hubs
 
         public async Task<IEnumerable<Message>> GetMessages(string dialogId)
         {
-            return await _chatRepo.GetLastMessages(dialogId).ToListAsync(); ;
+            
+            return await _chatRepo.GetLastMessages(dialogId).ToListAsync();
         }
     }
 }

@@ -3,6 +3,7 @@ using SignalRv2.Models;
 using SignalRv2.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -124,9 +125,9 @@ namespace SignalRv2.Services
             return _db.Messages.Where(d => d.DialogId == dialogId && d.IsRead == false);
         }
 
-        public long GetCountUnreadMessages(string dialogId)
+        public long GetCountUnreadMessages(string dialogId, string senderId)
         {
-            return _db.Messages.Where(d => d.DialogId == dialogId && d.IsRead == false).Count();
+            return _db.Messages.Where(d => d.DialogId == dialogId && d.IsRead == false && d.UserId != senderId && d.Content != null & d.Content.Length > 0).Count();
         }
 
 
