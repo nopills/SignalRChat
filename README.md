@@ -1,5 +1,5 @@
 ## 🛣️ SignalR Chat
-![Table](http://i.zhyk.ru/images/2020/12/01/1IgBh.png)
+🍉🍉🍉🍉🍉🍉🍉🍉🍉
 
 ### 📜 Description
 Just chat coded on C# / ASP.NET CORE with SignalR Core Tehcnology
