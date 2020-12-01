@@ -13,7 +13,7 @@ namespace SignalRv2.Models.ViewModels
         public string RecieverUsername { get; set; }
         
         public string LastMessage { get; set; }
-        public DateTimeOffset LastActivity { get; set; }
+        public string LastActivity { get; set; }
         public long UnreadMessage { get; set; }
     }
 }

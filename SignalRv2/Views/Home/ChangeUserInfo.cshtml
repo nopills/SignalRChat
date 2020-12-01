@@ -1,9 +1,10 @@
 ﻿@model SignalRv2.Models.ViewModels.ChangePasswordViewModel;
 @{
+    Layout = "~/Views/Home/Shared/_Layout.cshtml";
     ViewData["Title"] = "Change Password";
 }
 
-<h1>Change your password</h1>
+<h1 class="title">Change your password</h1class="title">
 
 
 <form asp-antiforgery="true" asp-action="ChangePassword" asp-controller="Home">
@@ -11,17 +12,17 @@
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div class="form-group">
             <label asp-for="CurrentPassword"></label><br />
-            <input asp-for="CurrentPassword" />
+            <input autocomplete="off" asp-for="CurrentPassword" />
             <span asp-validation-for="CurrentPassword"></span>
         </div>
         <div class="form-group">
             <label asp-for="NewPassword"></label><br />
-            <input asp-for="NewPassword" />
+            <input autocomplete="off" asp-for="NewPassword" />
             <span asp-validation-for="NewPassword"></span>
         </div>
         <div class="form-group">
             <label asp-for="ConfirmPassword"></label><br />
-            <input asp-for="ConfirmPassword" />
+            <input autocomplete="off" asp-for="ConfirmPassword" />
             <span asp-validation-for="ConfirmPassword"></span>
         </div>
         <button type="submit" class="btn btn-primary">Update</button>

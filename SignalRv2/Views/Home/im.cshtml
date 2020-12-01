@@ -1,18 +1,9 @@
 ﻿@using SignalRv2.Abstract
 @using System.Globalization;
-@*@model List<SignalRv2.Models.ViewModels.DialogViewModel>*@
 
 @{
     Layout = "~/Views/Home/Shared/_Layout.cshtml";
 }
-
-@*<script>
-    async function GetDialogs() {
-        const response = await fetch('https://localhost:44399/GetDialogs');
-    }
-    GetDialogs();
-</script>*@
-
 
 <!-- content -->
 <div class="content">
@@ -20,7 +11,7 @@
     <div class="sidebar-group">
         <div class="sidebar-group-header">
             <figure class="avatar avatar-state-online">
-                <img src="/img/avatars/man_avatar1.jpg" alt="avatar" class="avatar main-avatar-circle">
+                <img src="/img/avatars/default-avatar.png" alt="avatar" class="avatar main-avatar-circle">
             </figure>
             <div class="user-title">
                 <h3>@User.Identity.FullName()</h3>
@@ -31,8 +22,8 @@
             <div class="actions">
                 <ul class="actions-list">
                     <li class="actions-list-item">
-                        <a href="#" class="btn btn-change-name">
-                            <img src="/img/svg/controls/bx-pencil.svg" alt="Change Username">
+                        <a href="/ChangePassword" class="btn btn-change-name">
+                            <img src="/img/svg/controls/bx-gear.svg" alt="Change Username">
                         </a>
                     </li>
                 </ul>
@@ -72,68 +63,18 @@
                     <img src="/img/svg/controls/bx-more.svg" alt="Show More">
                 </div>
                 <figure class="reciever-avatar">
-                    <img src="/img/avatars/man_avatar4.jpg" alt="Reciever Avatar" class="reciever-avatar-circle">
+                    <img src="/img/avatars/default-avatar.png" alt="Reciever Avatar" class="reciever-avatar-circle">
                 </figure>
             </div>
         </div>
         <div class="chat-body">
             <div class="messages">
-
-                @*<div class="message-item outgoing-message">
-                        <div class="message">
-                            <div class="dialog-user-title">
-                                <div class="time">01:20 PM <i class="double-checke-message"></i></div>
-                                <h5 class="sender-name">You</h5>
-                            </div>
-                            <div class="message-content">
-                                Hello!
-                            </div>
-                        </div>
-                        <figure class="avatar">
-                            <img src="/img/avatars/man_avatar1.jpg" class="avatar avatar-circle" alt="dialog-avatar">
-                        </figure>
-                    </div>
-
-                    <div class="message-item outgoing-message">
-                        <div class="message">
-                            <div class="dialog-user-title">
-                                <div class="time">01:20 PM <i class="double-checke-message"></i></div>
-                                <h5 class="sender-name">You</h5>
-                            </div>
-                            <div class="message-content">
-                                Hello, how are you?
-                            </div>
-                        </div>
-                        <figure class="avatar">
-                            <img src="/img/avatars/man_avatar1.jpg" class="avatar avatar-circle" alt="dialog-avatar">
-                        </figure>
-                    </div>
-
-                    <div class="message-item">
-                        <figure class="avatar">
-                            <img src="/img/avatars/man_avatar4.jpg" class="avatar avatar-circle" alt="dialog-avatar">
-                        </figure>
-                        <div class="message">
-                            <div class="dialog-user-title">
-                                <h5 class="reciever-name">Rabbit</h5>
-                                <div class="time">01:20 PM <i class="double-checke-message"></i></div>
-                            </div>
-                            <div class="message-content">
-                                I'm fine, thx. What about you?
-                            </div>
-                        </div>
-                    </div>*@
-
+                @*Here Will be Messages*@
             </div>
-
             <!-- ./ chat -->
         </div>
         <div class="chat-footer">
             <div class="send-message">
-                @*<div class="message-textarea">
-                      <textarea name="message" id="message" class="message-input" placeholder="Just type something..."></textarea>
-                    </div>
-                    <input type="submit" id="sendBtn" class="btn-primary" value=""/>*@
                 <input type="textarea" id="messageInput" class="message-input" placeholder="Just type something...">
                 <button type="submit" class="btn-primary" id="sendBtn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
@@ -146,4 +87,5 @@
             </div>
         </div>
         <!-- ./ content -->
-
+        <script src="~/js/microsoft/signalr/dist/browser/signalr.js"></script>
+        <script type="module" src="~/js/signalr.js"></script>
