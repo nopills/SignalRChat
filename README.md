@@ -1,8 +1,16 @@
 ## 🛣️ SignalR Chat
-🍉🍉🍉🍉🍉🍉🍉🍉🍉
+🍉🍉🍉 Just chat coded on C# 🍉🍉🍉
 
 ### 📜 Description
-Just chat coded on C# / ASP.NET CORE with SignalR Core Technology
+ASP.NET CORE /  SignalR Core /  Identity etc.
+
+1. Authorization
+2. Registration
+3. Forgot password / Reset password with email token
+4. Email confirmation
+5. Change password on your profile
+6. Just chatting
+
 
 ### 🔧 Technologies & Tools
 ![](https://img.shields.io/badge/Code-C%23-blue)
