@@ -16,9 +16,11 @@ ASP.NET CORE /  SignalR Core /  Identity etc.
 ![](https://img.shields.io/badge/Code-C%23-blue)
 ![](https://img.shields.io/badge/Tech-ASP.NET%20CORE-blueviolet)
 ![](https://img.shields.io/badge/Tech-SignalR%20Core-green)
+![](https://img.shields.io/badge/Identity-ASP.NET%20CORE%20IDENTITY-red)
 ![](https://img.shields.io/badge/Front-JavaScript%2C%20HTML%2C%20CSS-brightgreen)
 ![](https://img.shields.io/badge/ORM-Entity%20Framework%20Core-orange)
 ![](https://img.shields.io/badge/DB-MySQL-yellow)
+
 
 ###	📑 LogIn and Register Pages
 ![](https://github.com/nopills/SignalRChat/blob/master/assets/LoginPage.png)
