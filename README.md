@@ -26,5 +26,5 @@ ASP.NET CORE /  SignalR Core /  Identity etc.
 ![](https://github.com/nopills/SignalRChat/blob/master/assets/LoginPage.png)
 ![](https://github.com/nopills/SignalRChat/blob/master/assets/RegisterPage.png)
 
-### 💡 Little bit about Views
+### 💡 Little bit about how it's working on 2 browsers
 ![](https://github.com/nopills/SignalRChat/blob/master/assets/gif.gif)
