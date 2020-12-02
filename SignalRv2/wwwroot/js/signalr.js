@@ -12,8 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
    /* SUBSCRIBE TO BROADCASTING */
-    connection.on("CheckStatus", (username, status) => {
+    connection.on("CheckUserStatus", (username, status) => {
         console.log(username + " is " + status);
+        service.ChangeUserStatus(username, status);
     });
 
     connection.on("RecieveMessage", (senderFullName, senderUserName, message) => {      
@@ -44,8 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById("messageInput").value = "";
         }
     });
-   }
- 
+    }
+   
         
     connection.start().then(conn => connection.invoke("GetDialogs").then(dialogData =>
     {

@@ -6,12 +6,10 @@ function NewMessageNotification(senderName, message) {
         let username = u.querySelector('.userName').innerHTML;
         if (username === senderName) {
             let counter = parseInt(u.querySelector('.new-message-count').innerHTML);
-
-     
+  
             let time = new Date();
             time = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
            
-
             u.querySelector('p').innerHTML = message;
             u.querySelector('.message-time').innerHTML = time;
 
@@ -36,7 +34,7 @@ function GetDialogs(dialogs) {
                     <div class="dialogId" hidden="true">` + e.dialogId + `</div>
                     <div class="senderId" hidden="true">` + e.senderId + `</div>
                     <div class="userName" hidden="true">` + e.recieverUsername + `</div>
-                    <figure class="avatar-status-active">
+                    <figure class="user-status avatar-status-`+ e.status +`">
                     <img src="/img/avatars/default-avatar.png" alt="user-avatar" class="avatar avatar-circle">
                 </figure>
                 <div class="user-list-body">

@@ -45,6 +45,10 @@ namespace SignalRv2.Services
             return _db.Users;
         }
 
+        //public IQueryable<User> GetUsersByStatus(UserStatus status)
+        //{
+        //    return _db.Users.Where
+        //}
         public Message GetMessageById(string messageId)
         {
             return _db.Messages.FirstOrDefault(m => m.Id == messageId);
@@ -130,6 +134,6 @@ namespace SignalRv2.Services
             return _db.Messages.Where(d => d.DialogId == dialogId && d.IsRead == false && d.UserId != senderId && d.Content != null & d.Content.Length > 0).Count();
         }
 
-
+       
     }
 }

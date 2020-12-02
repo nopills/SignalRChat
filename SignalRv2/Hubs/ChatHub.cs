@@ -19,13 +19,14 @@ namespace SignalRv2.Hubs
         AppSettings _settings;
         IChatService _chatService;
         IChatRepo _chatRepo;
-    
+        IEnumerable<DialogViewModel> dialogs;
+
 
         public ChatHub(AppSettings settings, IChatService chatService, IChatRepo chatRepo)
         {
             _settings = settings;
             _chatService = chatService;
-            _chatRepo = chatRepo;    
+            _chatRepo = chatRepo;
         }
 
         public override async Task OnConnectedAsync()
@@ -39,22 +40,31 @@ namespace SignalRv2.Hubs
         {
             User currentUser = _chatRepo.GetUserByName(Context.User.Identity.Name);
             await SendStatus(UserStatus.Offline);
+            if (dialogs != null)
+            {
+                await CheckUserStatus(dialogs, currentUser);
+            }          
             await base.OnDisconnectedAsync(exception);
         }
 
         public async Task SendStatus(UserStatus status)
-        {
+        {           
             User currentUser = _chatRepo.GetUserByName(Context.User.Identity.Name);               
-            await _chatService.ChangeStatus(currentUser, status);
-            await Clients.All.SendAsync("CheckStatus", Context.User.Identity.Name, status.ToString());
+            await _chatService.ChangeStatus(currentUser, status);        
         }
 
-        //public async Task CheckUserStatus()
-        //{
-        //    User currentUser = _chatRepo.GetUserByName(Context.User.Identity.Name);
-        //    IEnumerable<Dialog> dialogs = await _chatRepo.GetAllDialogs(currentUser).ToListAsync();
-       
-        //}
+        private async Task CheckUserStatus(IEnumerable<DialogViewModel> dialogs, User user)
+        {
+            foreach (var u in dialogs)
+            {
+                if (u.Status == UserStatus.Online.ToString() || u.Status == UserStatus.Recently.ToString())
+                {
+                    await Clients.User(u.RecieverUsername).SendAsync("CheckUserStatus", Context.User.Identity.Name, user.Status.ToString());
+
+                }
+            }
+
+        }
 
         public async Task MarkAsRead(string[] messageId)
         {
@@ -141,7 +151,8 @@ namespace SignalRv2.Hubs
                          SenderId = c.CreatedById,
                          RecieverName = String.Format("{0} {1}", c.Reciever.FirstName, c.Reciever.LastName),    
                          RecieverUsername = c.Reciever.UserName,
-                         UnreadMessage = _chatRepo.GetCountUnreadMessages(c.Id, user.Id)
+                         UnreadMessage = _chatRepo.GetCountUnreadMessages(c.Id, user.Id),
+                         Status = c.Reciever.Status.ToString()
                      } :
                     new DialogViewModel
                     {
@@ -151,11 +162,19 @@ namespace SignalRv2.Hubs
                         SenderId = c.RecieverId,
                         RecieverName = String.Format("{0} {1}", c.CreatedBy.FirstName, c.CreatedBy.LastName),
                         RecieverUsername = c.CreatedBy.UserName,
-                        UnreadMessage = _chatRepo.GetCountUnreadMessages(c.Id, user.Id)
+                        UnreadMessage = _chatRepo.GetCountUnreadMessages(c.Id, user.Id),
+                        Status = c.CreatedBy.Status.ToString()
                     }
                     ).ToList();
-                // await Clients.User(identityName).SendAsync("GetLastDialogs", dialogViewModels);
-                return dialogViewModels;
+       
+
+                if(dialogViewModels != null)
+                {
+                    dialogs = dialogViewModels;
+                    await CheckUserStatus(dialogViewModels, user);
+                    return dialogViewModels;
+                }
+
             }
             return null;
         }

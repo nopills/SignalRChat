@@ -10,6 +10,7 @@ namespace SignalRv2.Services.Interfaces
         Task ChangeUserInfo(User user, string FName, string LName, string AvatarUrl);
         User GetUserById(string userId);
         User GetUserByName(string name);
+        //IQueryable<User> GetUsersByStatus(string status);
         IQueryable<Message> GetLastMessages(string dialogId);
         IQueryable<Message> GetUnreadMessages(string dialogId);
         long GetCountUnreadMessages(string dialogId, string senderId);

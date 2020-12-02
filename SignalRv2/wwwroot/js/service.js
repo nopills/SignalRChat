@@ -32,5 +32,15 @@ function setActiveDialog(connection) {
     });   
 }
 
+function ChangeUserStatus(senderName, status) {
+    let listGroup = document.querySelectorAll('.group-item');
+    Array.from(listGroup).find((u) => {
+        let username = u.querySelector('.userName').innerHTML;       
+        if (username === senderName) {
+            let userstatus = u.querySelector('.user-status');
+            userstatus.className = ".user-status avatar-status-"+status;     
+        }
+    });
+}
 
-export { setActiveDialog };
+export { setActiveDialog, ChangeUserStatus };

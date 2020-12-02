@@ -11,7 +11,7 @@ namespace SignalRv2.Models.ViewModels
         public string SenderId { get; set; }
         public string RecieverName { get; set; }
         public string RecieverUsername { get; set; }
-        
+        public string Status { get; set; }
         public string LastMessage { get; set; }
         public string LastActivity { get; set; }
         public long UnreadMessage { get; set; }
